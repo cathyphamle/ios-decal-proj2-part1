@@ -11,6 +11,9 @@ import UIKit
 class ImagePickerController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate {
     
     @IBOutlet var imageCollectionView: UICollectionView!
+    
+    var picked: UIImage?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.imageCollectionView.collectionViewLayout = ImageFlowLayout.init()
@@ -21,12 +24,20 @@ class ImagePickerController: UIViewController, UICollectionViewDataSource, UICol
         super.didReceiveMemoryWarning()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let dest = segue.destination as! chooseFeedTableViewController
+        dest.imagePicked = picked!
+    }
 
     func selectImage(_ image: UIImage) {
         //The image being selected is passed in as "image".
+        picked = image
+        performSegue(withIdentifier: "chooseImageFeed" , sender: self)
     }
     
-    
+    @IBAction func unwindImagePicker(segue: UIStoryboardSegue) {
+        
+    }
     
     //DON'T MODIFY CODE HERE AND BELOW!
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -40,6 +51,7 @@ class ImagePickerController: UIViewController, UICollectionViewDataSource, UICol
         cell.image.image = allImages[indexPath.row]
         return cell
     }
+    
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let selectedCell = collectionView.cellForItem(at: indexPath) as! imageCollectionVieCell
         selectImage(selectedCell.image.image!)
