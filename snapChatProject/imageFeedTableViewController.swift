@@ -22,6 +22,10 @@ class imageFeedTableViewController: UIViewController, UITableViewDelegate, UITab
         super.didReceiveMemoryWarning()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        self.imageFeedTableView.reloadData()
+    }
+    
     func numberOfSections(in tableView: UITableView) -> Int {
         return threads.count
     }
